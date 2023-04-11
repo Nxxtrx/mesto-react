@@ -1,21 +1,25 @@
 import React from 'react';
+import Card from './Card.js';
 import {api} from '../utils/Api.js';
 
+export default function Main({onEditProfile, isAddPlacePopupOpen, isEditAvatarPopupOpen, onCardClick}) {
 
+  const [userName, setUserName] = React.useState('');
+  const [userDescription, setUserDescription] = React.useState('');
+  const [userAvatar, setUserAvatar] = React.useState('');
 
-export default function Main({onEditProfile, isAddPlacePopupOpen, isEditAvatarPopupOpen}) {
-
-  const [userName, setUserName] = React.useState('')
-  const [userDescription, setUserDescription] = React.useState('')
-  const [userAvatar, setUserAvatar] = React.useState('')
+  const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
     api.getUserInfo().then(data => {
-        setUserName(data.name);
-        setUserDescription(data.about);
-        setUserAvatar(data.avatar);
+      setUserName(data.name);
+      setUserDescription(data.about);
+      setUserAvatar(data.avatar);
     })
-  })
+    api.getInitialCards().then(data => {
+      setCards(data)
+    })
+  }, []);
 
 
   return (
@@ -39,7 +43,9 @@ export default function Main({onEditProfile, isAddPlacePopupOpen, isEditAvatarPo
       </section>
 
       <section className="cards" aria-label="Добавленный фотографии">
-        <ul className="cards__list"></ul>
+        <ul className="cards__list">
+          {cards.map(item => <Card card={item} onCardClick={onCardClick} key={item._id}/>)}
+        </ul>
       </section>
 
     </main>

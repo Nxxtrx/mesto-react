@@ -51,9 +51,9 @@
 @import url("./blocks/popup/__image-title/popup__image-title.css");
 @import url("./blocks/popup/__form/_type/popup__form_type_confirm.css");
 
-@import url('./blocks/popup/__container/_change-avatar/popup__container_change-avatar.css');
+@import url('./blocks/popup/__container/_type/popup__container_type_change-avatar.css');
 @import url('./blocks/popup/__btn/_change-avatar/popup__btn_change-avatar.css');
 
-@import url('./blocks/popup/__container/_confirm-deletion/popup__container_confirm-deletion.css');
+@import url('./blocks/popup/__container/_type/popup__container_type_confirm-deletion.css');
 @import url('./blocks/popup/__btn/_confirm-deletion/popup__btn_confirm-deletion.css');
 

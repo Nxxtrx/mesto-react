@@ -6,14 +6,13 @@ import ImagePopup from './ImagePopup.js';
 import React from 'react';
 
 
-
 function App() {
 
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false)
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
 
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false)
-
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false)
+  const [selectedCard, setSelectedCard] = React.useState(false);
 
 
   function handleEditAvatarClick() {
@@ -21,25 +20,28 @@ function App() {
   }
 
   function handleEditProfileClick() {
-    setIsEditProfilePopupOpen(true)
+    setIsEditProfilePopupOpen(true);
   }
 
   function handleAddPlaceClick() {
-    setIsAddPlacePopupOpen(true)
+    setIsAddPlacePopupOpen(true);
   }
 
   function closeAllPopups() {
     setIsAddPlacePopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setSelectedCard(false);
   }
 
-
+  function handleCardClick(card) {
+    setSelectedCard(card);
+  }
 
   return (
     <div className="page">
       <Header />
-      <Main onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen = {handleEditAvatarClick} />
+      <Main onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen = {handleEditAvatarClick} onCardClick={handleCardClick}/>
       <Footer />
 
       <PopupWithForm name = {'edit'} title = {'Редактирование профиля'} isOpen = {isEditProfilePopupOpen} onClose = {closeAllPopups}>
@@ -63,23 +65,9 @@ function App() {
         <span className="popup__input-error avatar-url-error"></span>
       </PopupWithForm>
 
-      <ImagePopup />
+      <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
       <PopupWithForm name = {'confirm-deletion'} title = {'Вы уверены?'} ></PopupWithForm>
-
-      <template id="cards-template">
-        <li className="cards__item">
-          <button className="cards__delete-btn" type="button"></button>
-          <img className="cards__image" alt='#'/>
-          <div className="cards-description">
-            <h2 className="cards__subtitle"></h2>
-            <div className="cards__like-container">
-              <button className="cards__like-btn" type="button"></button>
-              <p className="cards__like-counter">0</p>
-            </div>
-          </div>
-        </li>
-      </template>
 
     </div>
 
