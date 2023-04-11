@@ -15,10 +15,10 @@ export default function Main({onEditProfile, isAddPlacePopupOpen, isEditAvatarPo
       setUserName(data.name);
       setUserDescription(data.about);
       setUserAvatar(data.avatar);
-    })
+    }).catch(err => console.log(`Ошибка: ${err}`));
     api.getInitialCards().then(data => {
       setCards(data)
-    })
+    }).catch(err => console.log(`Ошибка: ${err}`));
   }, []);
 
 

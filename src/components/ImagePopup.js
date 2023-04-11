@@ -1,6 +1,6 @@
-export default function ImagePopup({card, onClose}) {
+export default function ImagePopup({card, onClose, isOpen}) {
   return (
-    <section className ={` popup popup_type_open-image ${card? 'popup_opened' : ''}`} aria-label="Открытие картинок">
+    <section className ={` popup popup_type_open-image ${isOpen? 'popup_opened' : ''}`} aria-label="Открытие картинок">
       <div className="popup__image-container popup__overlay">
         <figure className="popup__figure">
           <img className="popup__image" src={card.link} alt={card.name} />
