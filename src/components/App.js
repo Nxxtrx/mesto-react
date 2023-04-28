@@ -8,6 +8,7 @@ import { api } from '../utils/Api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
+import AddPlacePopup from './AddPlacePopup.js';
 
 
 function App() {
@@ -22,6 +23,9 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState('')
 
   const [cards, setCards] = React.useState([]);
+
+  const [isLoading, setIsLodaing] = React.useState(false)
+
 
   React.useEffect(() => {
     api.getUserInfo().then(data => {
@@ -76,17 +80,30 @@ function App() {
   }
 
   function handleUpdateUser(name, description) {
+    setIsLodaing(true)
     api.setUserInfo(name, description).then((data) => {
       setCurrentUser(data)
       closeAllPopups()
-    })
+    }).catch(err => console.log(`Ошибка: ${err}`))
+    .finally(() => setIsLodaing(false))
   }
 
   function handleUpdateAvatar(avatarLink) {
+    setIsLodaing(true)
     api.setUserAvatar(avatarLink).then((data) => {
       setCurrentUser(data)
       closeAllPopups()
-    })
+    }).catch(err => console.log(`Ошибка: ${err}`))
+    .finally(() => setIsLodaing(false))
+  }
+
+  function handleAddPlaceSubmit(cardData) {
+    setIsLodaing(true)
+    api.setAddCard(cardData).then((newCard) => {
+      setCards([newCard, ...cards])
+      closeAllPopups()
+    }).catch(err => console.log(`Ошибка: ${err}`))
+    .finally(() => setIsLodaing(false))
   }
 
   return (
@@ -96,16 +113,11 @@ function App() {
       <Main cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen = {handleEditAvatarClick} onCardClick={handleCardClick}/>
       <Footer />
 
-      <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+      <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} isLoading={isLoading} />
 
-      <PopupWithForm name = {'add-item'} title = {'Новое место'} isOpen = {isAddPlacePopupOpen} onClose = {closeAllPopups}>
-        <input className="popup__profile-edit popup__profile-edit_type_title" type="text" id="picture-title" name="name" placeholder="Название" required minLength="2" maxLength="30" />
-        <span className="popup__input-error picture-title-error"></span>
-        <input className="popup__profile-edit popup__profile-edit_type_src" type="url" id="picture-url" name="link" placeholder="Ссылка на картинку" required />
-        <span className="popup__input-error picture-url-error"></span>
-      </PopupWithForm>
+      <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} isLoading={isLoading}/>
 
-      <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
+      <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} isLoading={isLoading} />
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups} isOpen={isImagePopupOpen} />
 
