@@ -1,7 +1,6 @@
 import React from 'react';
-import Card from './Card.js';
-import {api} from '../utils/Api.js';
-import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
+import Card from './Card.jsx';
+import { CurrentUserContext } from '../contexts/CurrentUserContext.jsx';
 
 export default function Main({cards, onCardLike, onCardDelete, onEditProfile, isAddPlacePopupOpen, isEditAvatarPopupOpen, onCardClick}) {
 
