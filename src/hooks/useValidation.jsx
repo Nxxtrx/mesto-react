@@ -3,8 +3,10 @@ import React from "react"
 export const useValidation = (value, validations) => {
 
   const [isEmpty, setIsEmpty] = React.useState(true)
-  const [minLengthError, setMinLengthError] = React.useState(true)
+  const [minLengthError, setMinLengthError] = React.useState(false)
+  const [linkError, setLinkError] = React.useState(false)
   const [isValid, setIsValid] = React.useState(false)
+
 
   React.useEffect(() => {
     for( const validation in validations) {
@@ -16,17 +18,24 @@ export const useValidation = (value, validations) => {
         case 'isEmpty':
           value ? setIsEmpty(false) : setIsEmpty(true)
           break;
+
+        case 'link':
+          const url = /(https?:\/\/[^\s]+)/g;
+          url.test(String(value).toLowerCase()) ? setLinkError(false) : setLinkError(true)
+          break;
       }
     }
   })
 
   React.useEffect(() => {
-    if (isEmpty || minLengthError) {
+    if (isEmpty || minLengthError || linkError) {
       setIsValid(false)
     } else {
       setIsValid(true)
     }
-  }, [isEmpty, minLengthError])
+  }, [isEmpty, minLengthError, linkError])
 
-  return {isEmpty, minLengthError, isValid, setIsValid}
+
+
+  return {isEmpty, minLengthError, linkError, isValid, setIsValid}
 }
